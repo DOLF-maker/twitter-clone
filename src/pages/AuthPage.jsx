@@ -2,7 +2,7 @@ import { Button, Col, Image, Row, Modal, Form } from "react-bootstrap";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthProvider";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 
 
 export default function AuthPage() {
@@ -36,6 +36,17 @@ export default function AuthPage() {
       console.error(error);
     }
   };
+
+const provider = new GoogleAuthProvider();
+const handleGoogleLogin = async (e) => {
+  e.preventDefault()
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -63,7 +74,7 @@ export default function AuthPage() {
           Join Twitter today.
         </h2>
         <Col sm={5} className="d-grid gap-2">
-          <Button className="rounded-pill" variant="outline-dark">
+          <Button onClick ={handleGoogleLogin} className="rounded-pill" variant="outline-dark">
             <i className="bi bi-google"></i> Sign up with Google
           </Button>
           <Button className="rounded-pill" variant="outline-dark">
